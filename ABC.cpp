@@ -24,8 +24,13 @@ public:
         }
 
         quad q = std::make_tuple(i, a, b, k);
-        if (dp.find(q) != dp.end()) {
-            return true;
+        auto it = dp.find(q);
+        if (it != dp.end()) {
+            if (it->second) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         sx[i] = 'A';
@@ -43,6 +48,8 @@ public:
             dp[q] = true;
             return true;
         }
+
+        dp[q] = false;
         return false;
     }
     char sx[35];
