@@ -3,6 +3,8 @@
 #include <queue>
 #include <cstring>
 
+typedef std::tuple<int, int, int, int> quad;
+
 class ABC {
 public:
     std::string createString(int N, int K) {
@@ -21,21 +23,30 @@ public:
             }
         }
 
+        quad q = std::make_tuple(i, a, b, k);
+        if (dp.find(q) != dp.end()) {
+            return true;
+        }
+
         sx[i] = 'A';
         if (match(i + 1, a + 1, b, k, K, N)) {
+            dp[q] = true;
             return true;
         }
         sx[i] = 'B';
         if (match(i + 1, a, b + 1, k + a, K, N)) {
+            dp[q] = true;
             return true;
         }
         sx[i] = 'C';
         if (match(i + 1, a, b, k + a + b, K, N)) {
+            dp[q] = true;
             return true;
         }
         return false;
     }
     char sx[35];
+    std::map<quad, bool> dp;
 };
 
 int main(int argc, char** argv) {
