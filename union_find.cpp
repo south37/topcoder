@@ -2,41 +2,30 @@
 #include <iostream>
 #include <vector>
 
-#define N 1000
-
 class union_find {
 public:
-    union_find(void) { std::memset(data, 0, sizeof(data)); }
+    union_find(int size) : data(size, -1) {}
     bool findSet(int x, int y) {
         return root(x) == root(y);
     }
     void unionSet(int x, int y) {
-        if (root(x) == root(y)) return;
+        x = root(x); y = root(y);
+        if (x == y) return;
         if (x < y) {
-          data[root(y)] = root(x);
+          data[y] = x;
         } else {
-          data[root(x)] = root(y);
+          data[x] = y;
         }
     }
     int root(int x) {
-        if (data[x] == 0) {
-            data[x] = x;
-            return x;
-        }
-        if (x == data[x]) {
-            return x;
-        } else {
-            int r = root(data[x]);
-            data[x] = r;
-            return r;
-        }
+        return (data[x] < 0) ? x : (data[x] = root(data[x]));
     }
 private:
-    int data[N];
+    std::vector<int> data;
 };
 
 int main(int argc, char** argv) {
-    union_find u;
+    union_find u(1000);
     u.unionSet(2, 3);
     std::cout << "0 is expected, got " << u.findSet(1, 2) << std::endl;
     std::cout << "1 is expected, got " << u.findSet(2, 3) << std::endl;
