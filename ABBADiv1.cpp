@@ -4,7 +4,7 @@
 #include <set>
 #include <queue>
 
-typedef unsigned long long unsigned int ulong;
+typedef unsigned long long int ulong;
 
 class ABBADiv1 {
 public:
@@ -32,7 +32,7 @@ public:
                 continue;
             }
             que.push(std::make_pair(addA(p.first), p.second + 1));
-            que.push(std::make_pair(addBAndRevese(p.first, p.second), p.second + 1));
+            que.push(std::make_pair(addB(p.first, p.second), p.second + 1));
         }
     }
     bool checkFromTarget(std::string& target, int len) {
@@ -73,7 +73,7 @@ public:
     ulong addA(ulong n) {
         return (n << 1);
     }
-    ulong addBAndRevese(ulong n, int len) {
+    ulong addB(ulong n, int len) {
         return reverseWithLen(((n << 1) | 0x01), len + 1);
     }
     ulong changeToLong(const std::string& s) {
@@ -88,7 +88,7 @@ public:
         return result;
     }
     ulong reverseWithLen(ulong n, int len) {
-        return reverse(n) >> (sizeof(long) * CHAR_BIT - len);
+        return reverse(n) >> (sizeof(ulong) * CHAR_BIT - len);
     }
     ulong reverse(ulong n) {
         ulong rv = 0;
@@ -103,18 +103,18 @@ public:
 
 
 int main(int argc, char** argv) {
-  ABBADiv1 a;
-  ulong result = a.changeToLong("BAAB");
-  std::cout << std::bitset<sizeof(ulong) * CHAR_BIT>(result) << std::endl;
-  std::cout << std::bitset<sizeof(ulong) * CHAR_BIT>(a.addA(result)) << std::endl;
-  std::cout << std::bitset<sizeof(ulong) * CHAR_BIT>(a.addBAndRevese(result, 4)) << std::endl;
+  // ABBADiv1 a;
+  // ulong result = a.changeToLong("BAAB");
+  // std::cout << std::bitset<sizeof(ulong) * CHAR_BIT>(result) << std::endl;
+  // std::cout << std::bitset<sizeof(ulong) * CHAR_BIT>(a.addA(result)) << std::endl;
+  // std::cout << std::bitset<sizeof(ulong) * CHAR_BIT>(a.addB(result, 4)) << std::endl;
 
-  std::cout << "start from BAAB" << std::endl;
-  std::string s("BAAB");
-  a.createFromInitial(s, 6);
-  for (auto it = a.set.begin(); it != a.set.end(); ++it) {
-      std::cout << std::bitset<sizeof(ulong) * CHAR_BIT>(*it) << std::endl;
-  }
+  // std::cout << "start from BAAB" << std::endl;
+  // std::string s("BAAB");
+  // a.createFromInitial(s, 6);
+  // for (auto it = a.set.begin(); it != a.set.end(); ++it) {
+  //     std::cout << std::bitset<sizeof(ulong) * CHAR_BIT>(*it) << std::endl;
+  // }
 
   ABBADiv1 b;
   std::cout << "Possible is expected, got " << b.canObtain("A", "BABA") << std::endl;

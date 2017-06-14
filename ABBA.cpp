@@ -1,20 +1,17 @@
 #include <iostream>
 #include <string>
-#include <algorithm>
-#include <set>
-#include <queue>
 
 class ABBA {
 public:
     std::string canObtain(std::string initial, std::string target) {
-        fromTarget(target, initial.length());
+        shrinkFromTarget(target, initial.length());
         if (target == initial) {
             return "Possible";
         } else {
             return "Impossible";
         }
     }
-    void fromTarget(std::string& target, int len) {
+    void shrinkFromTarget(std::string& target, int len) {
         int r_len = target.length();
         while (r_len > len) {
             if (canRemoveA(target)) {
@@ -42,7 +39,7 @@ int main(int argc, char** argv) {
     std::cout << "Possible is expected, and got " << a0.canObtain("B", "ABBA") << std::endl;
     // std::string s("ABBA");
     // std::cout << s << std::endl;
-    // a0.fromTarget(s, 1);
+    // a0.shrinkFromTarget(s, 1);
     // std::cout << s << std::endl;
     ABBA a1;
     std::cout << "Impossible is expected, and got " << a1.canObtain("AB", "ABB") << std::endl;
