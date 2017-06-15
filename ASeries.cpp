@@ -3,19 +3,16 @@
 #include <set>
 #include <map>
 #include <vector>
+#include "util.h"
 
 class ASeries {
 public:
     int longest(std::vector<int> values) {
         std::sort(values.begin(), values.end());
-        // for (auto it = values.begin(); it != values.end(); ++it) {
-        //     std::cout << *it << std::endl;
-        // }
         makeDiffs(values);
+        // util::printVector(values);
         makeValuesMap(values);
-        // for (auto it = valuesMap.begin(); it != valuesMap.end(); ++it) {
-        //     std::cout << it->first << ", " << it->second << std::endl;
-        // }
+        // util::printMap(valuesMap);
         int m = -1;
 
         for (auto itM = valuesMap.begin(); itM != valuesMap.end(); ++itM) {
