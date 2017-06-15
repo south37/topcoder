@@ -43,27 +43,18 @@ public:
     }
     void makeDiffs(const std::vector<int>& values) {
         for (auto it = values.begin(); it != values.end(); ++it) {
-            for (auto it2 = values.begin(); it2 != values.end(); ++it2) {
-                if (it == it2) {
-                    continue;
-                }
-                int diff = *it - *it2;
-                if (diff > 0) {
-                    diffs.insert(diff);
-                } else {
-                    diffs.insert(-diff);
-                }
+            for (auto it2 = std::next(it); it2 != values.end(); ++it2) {
+                int diff = *it2 - *it;  // Always equal or larger than 0.
+                diffs.insert(diff);
             }
         }
     }
     void makeValuesMap(const std::vector<int>& values) {
         valuesMap.clear();
         for (auto it = values.begin(); it != values.end(); ++it) {
-            auto itM = valuesMap.find(*it);
-            if (itM != valuesMap.end()) {
-                valuesMap[*it] += 1;
-            } else {
-                valuesMap[*it] = 1;
+            auto ir = valuesMap.insert(std::make_pair(*it, 1));
+            if (!ir.second) {
+                ir.first->second += 1;
             }
         }
     }
