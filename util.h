@@ -1,5 +1,8 @@
 #include <algorithm>
 
+#ifndef UTIL_H_
+#define UTIL_H_
+
 namespace util {
 
 void printVector(std::vector<int> v) {
@@ -15,3 +18,5 @@ void printMap(std::map<int, int> m) {
 }
 
 }
+
+#endif  // UTIL_H_
