@@ -1,9 +1,10 @@
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <iterator>
 #include <iomanip>
-#include <queue>
-#include <map>
+#include <set>
+#include <vector>
 
 using namespace std;
 
@@ -14,96 +15,37 @@ using namespace std;
 class EllysBottles {
 public:
   double getVolume(vector <int> bottles, int k) {
-    int len = bottles.size();
     int k_count = min(k, MAX_ITER);
 
-    priority_queue<double, vector<double>, greater<double>> minq;
-    for(auto b : bottles) {
-      minq.push(b);
-    }
-    priority_queue<double> maxq;
-    for(auto b : bottles) {
-      maxq.push(b);
+    multiset<double> st;
+    for (auto b : bottles) {
+      st.insert(b);
     }
 
-    map<double, int> usedMin;  // poped value from maxq must be rejected from minq. so is is pushed to here.
-    map<double, int> usedMax;  // poped value from minq must be rejected from maxq. so is is pushed to here.
     for (int i = 0; i < k_count; ++i) {
-      // fetch minB
-      double minB;
-      while (true) {
-        minB = minq.top(); minq.pop();
-        // Check presence in usedMin
-        auto it = usedMin.find(minB);
-        if ((it != usedMin.end()) && (it->second > 0)) {
-          it->second -= 1;
-          continue;
-        }
-        break;
-      }
-
-
-      // fetch maxB
-      double maxB;
-      while (true) {
-        maxB = maxq.top(); maxq.pop();
-        // Check presence in usedMax
-        auto it = usedMax.find(maxB);
-        if ((it != usedMax.end()) && (it->second > 0)) {
-          it->second -= 1;
-          continue;
-        }
-        break;
-      }
-
-
-      auto maxIt = usedMax.find(minB);
-      if (maxIt != usedMax.end()) {
-        maxIt->second += 1;
-      } else {
-        usedMax[minB] = 1;
-      }
-      auto minIt = usedMin.find(maxB);
-      if (minIt != usedMin.end()) {
-        minIt->second += 1;
-      } else {
-        usedMin[maxB] = 1;
-      }
-
-      if (DEBUG) cout << "minB: " << minB << endl;
-      if (DEBUG) cout << "maxB: " << maxB << endl;
+      auto beginIt = st.begin();
+      double minB = *beginIt;
+      if (DEBUG) { cout << "minB: " << minB << endl; }
+      st.erase(beginIt);
+      auto endIt = prev(st.end());
+      double maxB = *endIt;
+      if (DEBUG) { cout << "maxB: " << maxB << endl; }
+      st.erase(endIt);
 
       double mean = (double)(minB + maxB) / 2.0;
-      minq.push(mean);
-      minq.push(mean);
-      maxq.push(mean);
-      maxq.push(mean);
+      st.insert(mean);
+      st.insert(mean);
 
       if (DEBUG) {
         cout << "{";
-        priority_queue<double, vector<double>, greater<double>> copyMinq = minq;
-        for (int i = 0; i < len; ++i) {
-          double b = minq.top(); minq.pop();
+        for (auto b : st) {
           cout << b << ", ";
         }
         cout << "}" << endl;
-
-        minq = copyMinq;
       }
     }
 
-    double result;
-    while (true) {
-      result = minq.top(); minq.pop();
-      // Check presence in usedMin
-      auto it = usedMin.find(result);
-      if ((it != usedMin.end()) && (it->second > 0)) {
-        it->second -= 1;
-        continue;
-      }
-      break;
-    }
-    return result;
+    return *st.begin();
   }
 };
 
