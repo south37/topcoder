@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 
 using namespace std;
@@ -43,10 +44,10 @@ public:
       double angleDiff2 = asin(sinDiff2);
       if (DEBUG) std::cout << "angleDiff2: " << angleDiff2 << std::endl;
 
-      double cosTotalAngle = (x1 * x2 + y1 * y2) / (sqrt(x1 * x1 + y1 * y1) * sqrt(x2 * x2 + y2 * y2));
-      if (DEBUG) std::cout << "cosTotalAngle: " << cosTotalAngle << std::endl;
-      double totalAngle = acos(cosTotalAngle);
-      if (DEBUG) std::cout << "totalAngle: " << totalAngle << std::endl;
+      double dot = x1 * x2 + y1 * y2;    // |p1| |p2| cos(0)
+      double cross = x1 * y2 - y1 * x2;  // |p1| |p2| sin(0)
+      double totalAngle = abs(atan2(cross, dot));
+      if (DEBUG) std::cout << "totalAngle: " << setprecision(10) << totalAngle << std::endl;
       double diffAngle = totalAngle - angleDiff1 - angleDiff2;
 
       return diffD1 + diffD2 + (r * diffAngle);
@@ -56,14 +57,14 @@ public:
 
 int main(int argc, char** argv) {
     AroundTheWall a0;
-    std::cout << "a0: Expected 3.605551275463989, Got \"" << a0.minDistance(1, 1, 2, -2, 0) << "\"" << std::endl;
+    std::cout << "a0: Expected 3.605551275463989, Got \"" << setprecision(10) << a0.minDistance(1, 1, 2, -2, 0) << "\"" << std::endl;
 
     AroundTheWall a1;
-    std::cout << "a1: Expected 11.41897054604164, Got \"" << a1.minDistance(5, -7, -1, 1, 7) << "\"" << std::endl;
+    std::cout << "a1: Expected 11.41897054604164, Got \"" << setprecision(10) << a1.minDistance(5, -7, -1, 1, 7) << "\"" << std::endl;
 
     AroundTheWall a2;
-    std::cout << "a2: Expected 17.853981633974485, Got \"" << a2.minDistance(5, 1, 7, -1, -7) << "\"" << std::endl;
+    std::cout << "a2: Expected 17.853981633974485, Got \"" << setprecision(10) << a2.minDistance(5, 1, 7, -1, -7) << "\"" << std::endl;
 
     AroundTheWall a3;
-    std::cout << "a3: Expected 55.35743588970452, Got \"" << a3.minDistance(25, -7, 24, -15, -20) << "\"" << std::endl;
+    std::cout << "a3: Expected 55.35743588970452, Got \"" << setprecision(10) << a3.minDistance(25, -7, 24, -15, -20) << "\"" << std::endl;
 }
