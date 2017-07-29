@@ -28,16 +28,20 @@ public:
 
     } else { // Wall is not preventing
       // point 1
-      double d1 = sqrt(x1 * x1 + y1 * y1);
-      double diffD1 = sqrt(x1 * x1 + y1 * y1 - r * r);
-      double cosDiff1 = diffD1 / d1;
-      double angleDiff1 = acos(cosDiff1);
+      double d1 = sqrt((double)(x1 * x1 + y1 * y1));
+      double diffD1 = sqrt((double)(x1 * x1 + y1 * y1 - r * r));
+      if (DEBUG) std::cout << "diffD1: " << diffD1 << std::endl;
+      double sinDiff1 = diffD1 / d1;
+      double angleDiff1 = asin(sinDiff1);
+      if (DEBUG) std::cout << "angleDiff1: " << angleDiff1 << std::endl;
 
       // point 2
-      double d2 = sqrt(x2 * x2 + y2 * y2);
-      double diffD2 = sqrt(x2 * x2 + y2 * y2 - r * r);
-      double cosDiff2 = diffD2 / d2;
-      double angleDiff2 = acos(cosDiff2);
+      double d2 = sqrt((double)(x2 * x2 + y2 * y2));
+      double diffD2 = sqrt((double)(x2 * x2 + y2 * y2 - r * r));
+      if (DEBUG) std::cout << "diffD2: " << diffD2 << std::endl;
+      double sinDiff2 = diffD2 / d2;
+      double angleDiff2 = asin(sinDiff2);
+      if (DEBUG) std::cout << "angleDiff2: " << angleDiff2 << std::endl;
 
       double cosTotalAngle = (x1 * x2 + y1 * y2) / (sqrt(x1 * x1 + y1 * y1) * sqrt(x2 * x2 + y2 * y2));
       if (DEBUG) std::cout << "cosTotalAngle: " << cosTotalAngle << std::endl;
@@ -72,5 +76,8 @@ int main(int argc, char** argv) {
     std::cout << "a1: Expected 11.41897054604164, Got \"" << a1.minDistance(5, -7, -1, 1, 7) << "\"" << std::endl;
 
     AroundTheWall a2;
-    std::cout << "a1: Expected 17.853981633974485, Got \"" << a2.minDistance(5, 1, 7, -1, -7) << "\"" << std::endl;
+    std::cout << "a2: Expected 17.853981633974485, Got \"" << a2.minDistance(5, 1, 7, -1, -7) << "\"" << std::endl;
+
+    AroundTheWall a3;
+    std::cout << "a3: Expected 55.35743588970452, Got \"" << a3.minDistance(25, -7, 24, -15, -20) << "\"" << std::endl;
 }
