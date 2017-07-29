@@ -52,20 +52,6 @@ public:
       return diffD1 + diffD2 + (r * diffAngle);
     }
   }
-
-  // Used by rightBottom point.
-  // void leftBottomVector(int x, int y, int r) {
-  //   double len = sqrt(r) / sqrt(x * x + y * y);
-  //   double newX = -y / (x * x + ;
-  //   double newY = x;
-  // }
-
-  // Used by leftBottom point.
-  void leftUpVector(int x, int y, int r) {
-    double forLen = sqrt(r) / sqrt(x * x + y * y);
-    double newX = y * forLen;
-    double newY = - x * forLen;
-  }
 };
 
 int main(int argc, char** argv) {
