@@ -19,7 +19,7 @@ public:
       }
     }
 
-    map<int, bool> groupM;
+    map<int, int> groupM;
     int groupCount = 0;
     int sumCount = 0;
     for(auto it = m.begin(); it != m.end(); ++it) {
@@ -27,7 +27,7 @@ public:
 
       if (it -> first == 0) {
         if (it->second >= 3) {
-          groupM[it->first] = true;
+          groupM[it->first] = it->second;
           groupCount += 1;
           if (it->second > 3) {
             sumCount += (it->second - 3);
@@ -35,7 +35,7 @@ public:
         }
       } else {
         if (it->second >= 2) {
-          groupM[it->first] = true;
+          groupM[it->first] = it->second + 1;  // larger by parent node.
           groupCount += 1;
           if (it->second > 2) {
             sumCount += (it->second - 2);
@@ -51,10 +51,10 @@ public:
 
         auto parentIt = groupM.find(parent);
         if (parentIt != groupM.end()) {
-          if (parentIt->second) {
+          if (parentIt->second > 2 && it-> second > 2) {
             pairCount += 1;
-            parentIt->second = false;
-            it->second = false;
+            parentIt->second -= 1;
+            it->second -= 1;
           }
         }
       }
