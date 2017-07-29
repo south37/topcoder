@@ -94,5 +94,5 @@ int main(int argc, char** argv) {
 
   // Missed
   vector<int> bottles6 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5, 11, 12, 11, 3, 15, 16, 15, 18, 2, 1, 21, 22, 23, 24, 25, 25, 23, 22, 29, 30, 21, 32, 32, 0, 35, 36, 37, 37, 35, 40};
-  std::cout << "a: Expected 9, Got \"" << a0.countCuts(bottles6) << "\"" << std::endl;
+  std::cout << "a: Expected 8, Got \"" << a0.countCuts(bottles6) << "\"" << std::endl;
 }
