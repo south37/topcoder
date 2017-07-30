@@ -5,6 +5,8 @@
 
 using namespace std;
 
+#define DEBUG 1
+
 struct TransformTheTree {
   int countCuts(vector<int> p) {
     const int n = p.size() + 1;
@@ -21,6 +23,16 @@ struct TransformTheTree {
         if (rem[j] >= 1) {
           ans--;
           rem[i]--;
+        }
+      }
+
+      if (DEBUG) {
+        if (g[i].size() >= 2) {
+          cout << i << ": ";
+          for (int j: g[i]) {
+            cout << j << ",";
+          }
+          cout << endl;
         }
       }
     }

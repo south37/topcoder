@@ -9,6 +9,7 @@ using namespace std;
 class TransformTheTree {
 public:
   int countCuts(vector <int> parents) {
+    int n = parents.size() + 1;
     map<int,int> m;
     for (int num: parents) {
       auto it = m.find(num);
@@ -23,7 +24,7 @@ public:
     int groupCount = 0;
     int sumCount = 0;
     for(auto it = m.begin(); it != m.end(); ++it) {
-      if (DEBUG) std::cout << it->first << ": " << it->second << std::endl;
+      if (DEBUG && it->second >= 2) std::cout << it->first << ": " << it->second << std::endl;
 
       if (it -> first == 0) {
         if (it->second >= 3) {
@@ -43,22 +44,25 @@ public:
         }
       }
     }
+    if (DEBUG) cout << "groupCount + sumCount: " << groupCount + sumCount << endl;
 
     int pairCount = 0;
-    for (auto it = groupM.begin(); it != groupM.end(); ++it) {
-      if (it->first > 0) {
-        int parent = parents[it->first - 1];
+    // Check starts from bottom.
+    for (int i = n - 1; i > 0; --i) {  // Skip 0
+      auto it = groupM.find(i);
+      if (it == groupM.end()) continue;
+      if (it->second <= 2) continue;
 
-        auto parentIt = groupM.find(parent);
-        if (parentIt != groupM.end()) {
-          if (parentIt->second > 2 && it-> second > 2) {
-            pairCount += 1;
-            parentIt->second -= 1;
-            it->second -= 1;
-          }
-        }
-      }
+      int parent = parents[i - 1];
+      auto parentIt = groupM.find(parent);
+      if (parentIt == groupM.end()) continue;
+      if (parentIt->second <= 2) continue;
+
+      pairCount += 1;
+      parentIt->second -= 1;
+      it->second -= 1;
     }
+    if (DEBUG) cout << "pairCount: " << pairCount << endl;
 
     int result = groupCount + sumCount;
     if (pairCount > 0) {
@@ -92,7 +96,7 @@ int main(int argc, char** argv) {
   vector<int> bottles5 = {0, 1, 2, 0, 4, 5, 6, 4, 5, 6, 0, 11, 12};
   std::cout << "a0: Expected 20.0625, Got \"" << a0.countCuts(bottles5) << "\"" << std::endl;
 
-  // Missed
+  // Missed at contest
   vector<int> bottles6 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5, 11, 12, 11, 3, 15, 16, 15, 18, 2, 1, 21, 22, 23, 24, 25, 25, 23, 22, 29, 30, 21, 32, 32, 0, 35, 36, 37, 37, 35, 40};
   std::cout << "a: Expected 8, Got \"" << a0.countCuts(bottles6) << "\"" << std::endl;
 }
