@@ -1,5 +1,4 @@
 #include <iostream>
-#include <map>
 #include <vector>
 
 using namespace std;
@@ -10,36 +9,33 @@ class TransformTheTree {
 public:
   int countCuts(vector <int> parents) {
     int n = parents.size() + 1;
-    map<int,int> m;
+    vector<int> childCounts(n, 0);
     for (int num: parents) {
-      auto it = m.find(num);
-      if (it != m.end()) {
-        it->second += 1;
-      } else {
-        m[num] = 1;
-      }
+      childCounts[num] += 1;
     }
 
-    map<int, int> groupM;
+    vector<int> nodeCounts(n);
     int groupCount = 0;
     int sumCount = 0;
-    for(auto it = m.begin(); it != m.end(); ++it) {
-      if (DEBUG && it->second >= 2) std::cout << it->first << ": " << it->second << std::endl;
+    for(int i = 0; i < n; ++i) {
+      if (DEBUG && childCounts[i] >= 2) std::cout << i << ": " << childCounts[i] << std::endl;
 
-      if (it -> first == 0) {
-        if (it->second >= 3) {
-          groupM[it->first] = it->second;
+      if (i == 0) {
+        nodeCounts[i] = childCounts[i];
+
+        if (childCounts[i] >= 3) {
           groupCount += 1;
-          if (it->second > 3) {
-            sumCount += (it->second - 3);
+          if (childCounts[i] > 3) {
+            sumCount += (childCounts[i] - 3);
           }
         }
       } else {
-        if (it->second >= 2) {
-          groupM[it->first] = it->second + 1;  // larger by parent node.
+        nodeCounts[i] = childCounts[i] + 1;  // larger by parent node.
+
+        if (childCounts[i] >= 2) {
           groupCount += 1;
-          if (it->second > 2) {
-            sumCount += (it->second - 2);
+          if (childCounts[i] > 2) {
+            sumCount += (childCounts[i] - 2);
           }
         }
       }
@@ -49,18 +45,13 @@ public:
     int pairCount = 0;
     // Check starts from bottom.
     for (int i = n - 1; i > 0; --i) {  // Skip 0
-      auto it = groupM.find(i);
-      if (it == groupM.end()) continue;
-      if (it->second <= 2) continue;
-
+      if (nodeCounts[i] <= 2) continue;
       int parent = parents[i - 1];
-      auto parentIt = groupM.find(parent);
-      if (parentIt == groupM.end()) continue;
-      if (parentIt->second <= 2) continue;
+      if (nodeCounts[parent] <= 2) continue;
 
       pairCount += 1;
-      parentIt->second -= 1;
-      it->second -= 1;
+      nodeCounts[i] -= 1;
+      nodeCounts[parent] -= 1;
     }
     if (DEBUG) cout << "pairCount: " << pairCount << endl;
 
