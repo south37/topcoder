@@ -65,20 +65,20 @@ public:
   }
 
   void preparebad(vector<string> bad) {
-    for(auto s = bad.begin(); s != bad.end(); ++s) {
+    for(auto &s : bad) {
       // NOTE: read int from bad string
-      int l = (*s).size();
+      int l = s.size();
       vector<int> space;
       for (int i = 0; i < l; ++i) {
-        if ((*s)[i] == ' ') {
+        if (s[i] == ' ') {
           space.push_back(i);
         }
       }
 
       vector<int> pos_list;
-      pos_list.push_back(stoi(*s));
+      pos_list.push_back(stoi(s));
       for(auto &p : space) {
-        pos_list.push_back(stoi(s->substr(p + 1)));
+        pos_list.push_back(stoi(s.substr(p + 1)));
       }
 
       quad p;
