@@ -1,7 +1,8 @@
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
+#include <boost/functional/hash.hpp>
 
 using namespace std;
 
@@ -11,11 +12,21 @@ using namespace std;
 #define MAX_L 100
 
 typedef tuple<int, int, int, int> quad;
+template<> struct hash<quad> {
+  size_t operator()(const quad& q) const noexcept {
+    size_t seed = 0;
+    boost::hash_combine(seed, get<0>(q));
+    boost::hash_combine(seed, get<1>(q));
+    boost::hash_combine(seed, get<2>(q));
+    boost::hash_combine(seed, get<3>(q));
+    return seed;
+  }
+};
 
 class AvoidRoads {
 private:
   long dp[MAX_W+1][MAX_L+1] = { 0 };
-  map<quad, int>bad_m;
+  unordered_map<quad, int>bad_m;
 
 public:
   long numWays(int w, int l, vector<string> bad) {
